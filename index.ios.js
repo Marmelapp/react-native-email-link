@@ -14,7 +14,7 @@ class EmailException {
 }
 
 const prefixes = {
-  appleMail: "message://",
+  "apple-mail": "message://",
   gmail: "googlegmail://",
   inbox: "inbox-gmail://",
   spark: "readdle-spark://",
@@ -23,7 +23,7 @@ const prefixes = {
 };
 
 const titles = {
-  appleMail: "Mail",
+  "apple-mail": "Mail",
   gmail: "Gmail",
   inbox: "Inbox",
   spark: "Spark",
@@ -136,19 +136,18 @@ export async function openInbox(options = {}) {
 
   let url = null;
 
-  if (app === "appleMail")
-    url = prefixes[app] + "mailto:" + options.recipient + "?subject=" + options.subject;
-  if (app === "gmail" || app === "inbox")
-    url = prefixes[app] + "/co?to=" + options.recipient + "&subject=" + options.subject;
-  if (app === "spark")
+  if (app === "apple-mail")
+    url = "mailto:" + options.recipient + "?subject=" + options.subject;
+  else if (app === "gmail" || app === "inbox")
+    url = prefixes[app] + "co?to=" + options.recipient + "&subject=" + options.subject;
+  else if (app === "spark")
     url = prefixes[app] + "compose?recipient:" + options.recipient + "?subject=" + options.subject;
-  if (app === "yahoo")
+  else if (app === "yahoo")
     url = prefixes[app] + "mail/compose?to:" + options.recipient + "?subject=" + options.subject;
-  if (app === "outlook")
+  else if (app === "outlook")
     url = prefixes[app] + "compose?to:" + options.recipient + "?subject=" + options.subject;
-  else 
-    url = prefixes[app];
-    
+
+
   if (url) {
     return Linking.openURL(url);
   }
