@@ -14,20 +14,20 @@ class EmailException {
 }
 
 const prefixes = {
-  "apple-mail": "message://",
+  appleMail: "message://",
   gmail: "googlegmail://",
   inbox: "inbox-gmail://",
   spark: "readdle-spark://",
-  airmail: "airmail://",
+  yahoo: "airmail://",
   outlook: "ms-outlook://"
 };
 
 const titles = {
-  "apple-mail": "Mail",
+  appleMail: "Mail",
   gmail: "Gmail",
   inbox: "Inbox",
   spark: "Spark",
-  airmail: "Airmail",
+  yahoo: "Yahoo",
   outlook: "Outlook"
 };
 
@@ -105,6 +105,8 @@ export function askAppChoice(
  *     title: string,
  *     message: string,
  *     cancelLabel: string,
+ *     recipient: string | undefined | null,
+ *     subject: string | undefined | null
  * }} options
  */
 export async function openInbox(options = {}) {
@@ -120,8 +122,8 @@ export async function openInbox(options = {}) {
   ) {
     throw new EmailException(
       'Option `app` should be undefined, null, or one of the following: "' +
-        Object.keys(prefixes).join('", "') +
-        '".'
+      Object.keys(prefixes).join('", "') +
+      '".'
     );
   }
 
@@ -133,11 +135,20 @@ export async function openInbox(options = {}) {
   }
 
   let url = null;
-  switch (app) {
-    default:
-      url = prefixes[app];
-  }
 
+  if (app === "appleMail")
+    url = prefixes[app] + "mailto:" + options.recipient + "?subject=" + options.subject;
+  if (app === "gmail" || app === "inbox")
+    url = prefixes[app] + "/co?to=" + options.recipient + "&subject=" + options.subject;
+  if (app === "spark")
+    url = prefixes[app] + "compose?recipient:" + options.recipient + "?subject=" + options.subject;
+  if (app === "yahoo")
+    url = prefixes[app] + "mail/compose?to:" + options.recipient + "?subject=" + options.subject;
+  if (app === "outlook")
+    url = prefixes[app] + "compose?to:" + options.recipient + "?subject=" + options.subject;
+  else 
+    url = prefixes[app];
+    
   if (url) {
     return Linking.openURL(url);
   }
