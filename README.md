@@ -9,7 +9,7 @@ Currently supported apps:
 * Gmail
 * Inbox
 * Spark
-* Airmail
+* Yahoo
 * Outlook
 
 
@@ -31,7 +31,7 @@ Omitting these might mean that the library can't detect some of the mail apps in
 <array>
     <string>message</string>
     <string>readdle-spark</string>
-    <string>airmail</string>
+    <string>ymail</string>
     <string>ms-outlook</string>
     <string>googlegmail</string>
     <string>inbox-gmail</string>
@@ -43,7 +43,7 @@ Omitting these might mean that the library can't detect some of the mail apps in
 ```
 import { openInbox } from 'react-native-email-link'
 
-openInbox()
+openInbox({ title: "alert title", message: "alert message", recipient: "recipient@mail.com", subject: "subject" });
 ```
 
 
